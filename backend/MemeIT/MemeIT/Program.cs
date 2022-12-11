@@ -1,7 +1,10 @@
 using MemeIT.DbContext;
 using MemeIT.IServices;
 using MemeIT.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace MemeIT
 {
@@ -18,7 +21,20 @@ namespace MemeIT
                 optionBuilder.UseSqlServer(builder.Configuration.GetConnectionString("SQLServer")));
 
             builder.Services.AddScoped<IMemeService, MemeService>();
+            builder.Services.AddScoped<IRegisterService, RegisterService>();
+            builder.Services.AddScoped<ILoginService,LoginService>();
 
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = true,
+                        IssuerSigningKey =
+                            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
+                    }
+                );
             var app = builder.Build();
 
             if (app.Environment.IsDevelopment())
