@@ -1,4 +1,6 @@
 using MemeIT.DbContext;
+using MemeIT.IServices;
+using MemeIT.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace MemeIT
@@ -14,6 +16,9 @@ namespace MemeIT
             builder.Services.AddSwaggerGen();
             builder.Services.AddDbContext<DbCon>(optionBuilder =>
                 optionBuilder.UseSqlServer(builder.Configuration.GetConnectionString("SQLServer")));
+
+            builder.Services.AddScoped<IMemeService, MemeService>();
+
             var app = builder.Build();
 
             if (app.Environment.IsDevelopment())
