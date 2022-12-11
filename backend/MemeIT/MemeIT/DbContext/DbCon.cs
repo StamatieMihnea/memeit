@@ -1,4 +1,4 @@
-﻿using MemeIT.Models;
+﻿using MemeIT.Entities;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.EntityFrameworkCore;
 

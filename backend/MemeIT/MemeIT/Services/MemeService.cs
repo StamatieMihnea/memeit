@@ -1,6 +1,7 @@
 ﻿using MemeIT.DbContext;
+using MemeIT.Entities;
+using MemeIT.Helpers.Exceptions;
 using MemeIT.IServices;
-using MemeIT.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace MemeIT.Services
@@ -14,7 +15,8 @@ namespace MemeIT.Services
             _dbContext = dbContext;
         }
 
-        public async Task<List<Meme>?> GetMemes()
+        /// <inheritdoc />>
+        public async Task<List<Meme>> GetMemes()
         {
             try
             {
@@ -22,26 +24,37 @@ namespace MemeIT.Services
             }
             catch (Exception)
             {
-                return null;
+                throw new InternalProblemException("An internal error occurred!");
             }
         }
 
-        public async Task<Meme?> GetMeme(int id)
+        /// <inheritdoc />>
+        public async Task<Meme> GetMeme(int id)
         {
+            Meme? meme;
             try
             {
-                return await _dbContext.Set<Meme>().FindAsync(id);
+                meme = await _dbContext.Set<Meme>().FindAsync(id);
             }
             catch (Exception)
             {
-                return null;
+                throw new InternalProblemException("An internal error occurred!");
             }
+            if (meme == null)
+            {
+                throw new NotFoundException($"Meme with id = {id} not found!");
+            }
+            return meme;
         }
 
-        public async Task<Meme?> ChangeDescription(Meme meme)
+        /// <inheritdoc />>
+        public async Task<Meme> ChangeDescription(Meme meme)
         {
-            var initialMeme = await GetMeme(meme.MemeId);
-            if (initialMeme == null) return initialMeme;
+            Meme? initialMeme = await GetMeme(meme.MemeId);
+            if (initialMeme == null)
+            {
+                throw new NotFoundException($"Meme with id = {meme.MemeId} not found!");
+            }
             initialMeme.Description = meme.Description;
             try
             {
@@ -51,11 +64,12 @@ namespace MemeIT.Services
             }
             catch (Exception)
             {
-                return null;
+                throw new InternalProblemException("An internal error occurred!");
             }
         }
 
-        public async Task<Meme?> AddMeme(Meme meme)
+        /// <inheritdoc />>
+        public async Task<Meme> AddMeme(Meme meme)
         {
             try
             {
@@ -65,23 +79,22 @@ namespace MemeIT.Services
             }
             catch (Exception)
             {
-                return null;
+                throw new InternalProblemException("An internal error occurred!");
             }
         }
 
-        public async Task<bool> DeleteMeme(int id)
+        /// <inheritdoc />>
+        public async Task DeleteMeme(int id)
         {
-            var meme = await GetMeme(id);
-            if (meme == null) return false;
+            Meme meme = await GetMeme(id);
             try
             {
                 _dbContext.Remove(meme);
                 await _dbContext.SaveChangesAsync();
-                return true;
             }
             catch (Exception)
             {
-                return false;
+                throw new InternalProblemException("An internal error occurred!");
             }
         }
     }

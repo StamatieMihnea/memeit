@@ -1,5 +1,7 @@
-﻿using MemeIT.IServices;
-using MemeIT.Models;
+﻿using MemeIT.Entities;
+using MemeIT.Helpers.Exceptions;
+using MemeIT.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MemeIT.Controllers
@@ -18,61 +20,84 @@ namespace MemeIT.Controllers
         [HttpGet]
         public async Task<IActionResult> GetMemes()
         {
-            List<Meme>? memes = await _memeService.GetMemes();
-            if (memes != null)
+            try
             {
+                List<Meme> memes = await _memeService.GetMemes();
                 return Ok(memes);
             }
-
-            return BadRequest();
+            catch (Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetMeme(int id)
         {
-            Meme? meme = await _memeService.GetMeme(id);
-            if (meme != null)
+            try
             {
+                Meme meme = await _memeService.GetMeme(id);
                 return Ok(meme);
             }
-            return BadRequest();
+            catch (Exception e) when (e is InternalProblemException)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+            catch (Exception e) when (e is NotFoundException)
+            {
+                return NotFound(e.Message);
+            }
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> AddMeme(Meme meme)
         {
-            Meme? addedMeme = await _memeService.AddMeme(meme);
-            if (addedMeme != null)
+            try
             {
+                Meme addedMeme = await _memeService.AddMeme(meme);
                 return Ok(addedMeme);
             }
-
-            return BadRequest();
+            catch (Exception e) when (e is InternalProblemException)
+            {
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, e.Message);
+            }
         }
 
         [HttpPatch]
+        [Authorize]
         public async Task<IActionResult> ChangeMemeDescription(Meme meme)
         {
-            Meme? modifiedMeme = await _memeService.ChangeDescription(meme);
-            if (modifiedMeme != null)
+            try
             {
+                Meme modifiedMeme = await _memeService.ChangeDescription(meme);
                 return Ok(modifiedMeme);
             }
-
-            return BadRequest();
+            catch (Exception e) when (e is InternalProblemException)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+            catch (Exception e) when (e is NotFoundException)
+            {
+                return NotFound(e.Message);
+            }
         }
 
         [HttpDelete]
         public async Task<IActionResult> DeleteMeme(int id)
         {
-            bool deleted = await _memeService.DeleteMeme(id);
-            if (deleted)
+            try
             {
+                await _memeService.DeleteMeme(id);
                 return Ok($"Meme with id = {id} successfully deleted");
             }
-            else
+            catch (Exception e) when (e is NotFoundException)
             {
-                return BadRequest();
+                return NotFound(e.Message);
+            }
+            catch (Exception e) when (e is InternalProblemException)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
             }
         }
     }
