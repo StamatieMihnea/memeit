@@ -1,5 +1,5 @@
-﻿using MemeIT.Entities;
-using MemeIT.Helpers.Exceptions;
+﻿using MemeIT.Helpers.CustomExceptions;
+using MemeIT.Models;
 
 namespace MemeIT.IServices
 {
@@ -10,8 +10,8 @@ namespace MemeIT.IServices
         /// </summary>
         /// <param name="user">User information</param>
         /// <returns></returns>
-        /// <exception cref="Helpers.Exceptions.InvalidDataException">Trow if the provided username or email already exists</exception>
+        /// <exception cref="Helpers.CustomExceptions.InvalidDataException">Trow if the provided username or email already exists</exception>
         /// <exception cref="InternalProblemException">Trow if an internal error occurs</exception>
-        Task RegisterUser(User user);
+        Task RegisterUser(UserModel user);
     }
 }

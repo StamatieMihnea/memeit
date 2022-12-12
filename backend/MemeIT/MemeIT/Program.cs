@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using AutoMapper;
+using MemeIT.Mappers;
 using Microsoft.OpenApi.Models;
 
 namespace MemeIT
@@ -40,7 +42,10 @@ namespace MemeIT
                 });
             });
             builder.Services.AddDbContext<DbCon>(optionBuilder =>
-                optionBuilder.UseSqlServer(builder.Configuration.GetConnectionString("SQLServer")));
+                optionBuilder.UseSqlServer(builder.Configuration.GetConnectionString("SQLServer")!));
+
+            IMapper mapper = new MapperConfiguration(conf => { conf.AddProfile(new MemeMapper()); }).CreateMapper();
+            builder.Services.AddSingleton(mapper);
 
             builder.Services.AddScoped<IMemeService, MemeService>();
             builder.Services.AddScoped<IRegisterService, RegisterService>();
@@ -48,14 +53,16 @@ namespace MemeIT
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
-                    options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidateIssuer = false,
-                        ValidateAudience = false,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey =
-                            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
+                        options.TokenValidationParameters = new TokenValidationParameters
+                        {
+                            ValidateIssuer = false,
+                            ValidateAudience = false,
+                            ValidateLifetime = true,
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey =
+                                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
+                        };
                     }
                 );
             var app = builder.Build();

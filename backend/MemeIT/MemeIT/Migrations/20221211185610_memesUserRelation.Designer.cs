@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MemeIT.Migrations
 {
     [DbContext(typeof(DbCon))]
-    [Migration("20221211164247_userConstrainModified")]
-    partial class userConstrainModified
+    [Migration("20221211185610_memesUserRelation")]
+    partial class memesUserRelation
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,7 +37,12 @@ namespace MemeIT.Migrations
                         .HasMaxLength(2500)
                         .HasColumnType("nvarchar(2500)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("MemeId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Meme");
                 });
@@ -56,8 +61,7 @@ namespace MemeIT.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
                         .IsRequired()
@@ -73,6 +77,22 @@ namespace MemeIT.Migrations
                         .IsUnique();
 
                     b.ToTable("User");
+                });
+
+            modelBuilder.Entity("MemeIT.Entities.Meme", b =>
+                {
+                    b.HasOne("MemeIT.Entities.User", "User")
+                        .WithMany("Memes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MemeIT.Entities.User", b =>
+                {
+                    b.Navigation("Memes");
                 });
 #pragma warning restore 612, 618
         }

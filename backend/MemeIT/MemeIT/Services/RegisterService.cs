@@ -1,29 +1,28 @@
-﻿using MemeIT.DbContext;
+﻿using AutoMapper;
+using MemeIT.DbContext;
 using MemeIT.Entities;
-using MemeIT.Helpers.Exceptions;
+using MemeIT.Helpers.CustomExceptions;
 using MemeIT.IServices;
+using MemeIT.Models;
 using Microsoft.EntityFrameworkCore;
-using InvalidDataException = MemeIT.Helpers.Exceptions.InvalidDataException;
+using InvalidDataException = MemeIT.Helpers.CustomExceptions.InvalidDataException;
 
 namespace MemeIT.Services
 {
     public class RegisterService : IRegisterService
     {
         private readonly DbCon _dbContext;
+        private readonly IMapper _mapper;
 
-        public RegisterService(DbCon dbContext)
+        public RegisterService(DbCon dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         /// <inheritdoc />>
-        public async Task RegisterUser(User user)
+        public async Task RegisterUser(UserModel user)
         {
-            int passwordLength = user.Password.Length;
-            if (passwordLength is < User.MinPasswordLimit or > User.MaxPasswordLimit)
-            {
-                throw new InvalidDataException($"Password must be between {User.MinPasswordLimit} and {User.MaxPasswordLimit}");
-            }
             bool usernameAlreadyExist = await _dbContext.Set<User>().AnyAsync(u => u.Username == user.Username);
             bool emailAlreadyExist = await _dbContext.Set<User>().AnyAsync(u => u.Email == user.Email);
             if (usernameAlreadyExist)
@@ -38,7 +37,7 @@ namespace MemeIT.Services
             user.Password = hashedPassword;
             try
             {
-                await _dbContext.AddAsync(user);
+                await _dbContext.AddAsync(_mapper.Map<User>(user));
                 await _dbContext.SaveChangesAsync();
             }
             catch (Exception)

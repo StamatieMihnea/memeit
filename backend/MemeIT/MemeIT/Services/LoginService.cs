@@ -1,13 +1,13 @@
 ﻿using MemeIT.DbContext;
 using MemeIT.Entities;
-using MemeIT.Helpers.Exceptions;
 using MemeIT.IServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using InvalidDataException = MemeIT.Helpers.Exceptions.InvalidDataException;
+using MemeIT.Helpers.CustomExceptions;
+using InvalidDataException = MemeIT.Helpers.CustomExceptions.InvalidDataException;
 
 namespace MemeIT.Services
 {

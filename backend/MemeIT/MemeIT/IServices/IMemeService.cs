@@ -1,5 +1,7 @@
 ﻿using MemeIT.Entities;
-using MemeIT.Helpers.Exceptions;
+using MemeIT.Helpers.CustomExceptions;
+using MemeIT.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MemeIT.IServices
 {
@@ -26,26 +28,33 @@ namespace MemeIT.IServices
         /// Changes a meme description 
         /// </summary>
         /// <param name="meme">The meme with the desired modifications made</param>
+        /// <param name="userId">User that tries the operation</param>
         /// <returns>The modified meme</returns>
         /// <exception cref="NotFoundException">Trow if no meme with desired id exists</exception>
+        /// <exception cref="NoPermissionException"></exception>    
         /// <exception cref="InternalProblemException">Trow if an internal error occurs</exception>
-        Task<Meme> ChangeDescription(Meme meme);
+        Task<Meme> ChangeDescription(MemeModel meme, int userId);
 
         /// <summary>
         /// Add a new meme
         /// </summary>
         /// <param name="meme">Meme to be added</param>
+        /// <param name="userId">User that tries the operation</param>
         /// <returns>The added meme</returns>
         /// <exception cref="InternalProblemException">Trow if an internal error occurs</exception>
-        Task<Meme> AddMeme(Meme meme);
+        Task<Meme> AddMeme(ImageMemeModel meme, int userId);
 
         /// <summary>
         /// Deletes a meme based on id
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="memeId">Meme Id to be deleted</param>
+        /// <param name="userId">User that tries the operation</param>
         /// <returns></returns>
         /// <exception cref="InternalProblemException"></exception>
+        /// <exception cref="NoPermissionException"></exception> 
         /// <exception cref="NotFoundException">Trow if no meme with desired id exists</exception>
-        Task DeleteMeme(int id);
+        Task DeleteMeme(int memeId, int userId);
+
+        public FileStream GetMemeImage(int memeId);
     }
 }

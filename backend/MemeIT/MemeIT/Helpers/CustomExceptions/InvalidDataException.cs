@@ -1,4 +1,4 @@
-﻿namespace MemeIT.Helpers.Exceptions
+﻿namespace MemeIT.Helpers.CustomExceptions
 {
     public class InvalidDataException : Exception
     {

@@ -1,6 +1,7 @@
 ﻿using MemeIT.Entities;
-using MemeIT.Helpers.Exceptions;
+using MemeIT.Helpers.CustomExceptions;
 using MemeIT.IServices;
+using MemeIT.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -51,11 +52,12 @@ namespace MemeIT.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> AddMeme(Meme meme)
+        public async Task<IActionResult> AddMeme([FromForm] ImageMemeModel meme)
         {
+            int userId = Convert.ToInt32(User.Claims.First(c => c.Type == "id").Value);
             try
             {
-                Meme addedMeme = await _memeService.AddMeme(meme);
+                Meme addedMeme = await _memeService.AddMeme(meme, userId);
                 return Ok(addedMeme);
             }
             catch (Exception e) when (e is InternalProblemException)
@@ -66,11 +68,12 @@ namespace MemeIT.Controllers
 
         [HttpPatch]
         [Authorize]
-        public async Task<IActionResult> ChangeMemeDescription(Meme meme)
+        public async Task<IActionResult> ChangeMemeDescription(MemeModel meme)
         {
+            int userId = Convert.ToInt32(User.Claims.First(c => c.Type == "id").Value);
             try
             {
-                Meme modifiedMeme = await _memeService.ChangeDescription(meme);
+                Meme modifiedMeme = await _memeService.ChangeDescription(meme, userId);
                 return Ok(modifiedMeme);
             }
             catch (Exception e) when (e is InternalProblemException)
@@ -81,15 +84,21 @@ namespace MemeIT.Controllers
             {
                 return NotFound(e.Message);
             }
+            catch (Exception e) when (e is NoPermissionException)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, e.Message);
+            }
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteMeme(int id)
+        [Authorize]
+        public async Task<IActionResult> DeleteMeme(int memeId)
         {
+            int userId = Convert.ToInt32(User.Claims.First(c => c.Type == "id").Value);
             try
             {
-                await _memeService.DeleteMeme(id);
-                return Ok($"Meme with id = {id} successfully deleted");
+                await _memeService.DeleteMeme(memeId, userId);
+                return Ok($"Meme with id = {memeId} successfully deleted");
             }
             catch (Exception e) when (e is NotFoundException)
             {
@@ -98,6 +107,25 @@ namespace MemeIT.Controllers
             catch (Exception e) when (e is InternalProblemException)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+            }
+            catch (Exception e) when (e is NoPermissionException)
+            {
+                return StatusCode(StatusCodes.Status403Forbidden, e.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("image/{memeId}")]
+        public IActionResult GetMemeImage(int memeId)
+        {
+            try
+            {
+                return File(_memeService.GetMemeImage(memeId), "image/png");
+
+            }
+            catch (Exception e) when (e is NotFoundException)
+            {
+                return NotFound(e.Message);
             }
         }
     }

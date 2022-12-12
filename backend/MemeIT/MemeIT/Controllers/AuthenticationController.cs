@@ -1,8 +1,8 @@
-﻿using MemeIT.Entities;
-using MemeIT.Helpers.Exceptions;
+﻿using MemeIT.Helpers.CustomExceptions;
 using MemeIT.IServices;
+using MemeIT.Models;
 using Microsoft.AspNetCore.Mvc;
-using InvalidDataException = MemeIT.Helpers.Exceptions.InvalidDataException;
+using InvalidDataException = MemeIT.Helpers.CustomExceptions.InvalidDataException;
 
 namespace MemeIT.Controllers
 {
@@ -20,7 +20,7 @@ namespace MemeIT.Controllers
 
         [Route("api/register")]
         [HttpPost]
-        public async Task<IActionResult> RegisterUser(User user)
+        public async Task<IActionResult> RegisterUser(UserModel user)
         {
             try
             {

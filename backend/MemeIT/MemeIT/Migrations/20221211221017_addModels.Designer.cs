@@ -11,18 +11,17 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MemeIT.Migrations
 {
     [DbContext(typeof(DbCon))]
-    [Migration("20221211163613_userConstrainAdded")]
-    partial class userConstrainAdded
+    [Migration("20221211221017_addModels")]
+    partial class addModels
     {
-        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.0")
+                .HasAnnotation("ProductVersion", "6.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("MemeIT.Entities.Meme", b =>
                 {
@@ -30,14 +29,23 @@ namespace MemeIT.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MemeId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MemeId"), 1L, 1);
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(2500)
                         .HasColumnType("nvarchar(2500)");
 
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("MemeId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Meme");
                 });
@@ -48,12 +56,11 @@ namespace MemeIT.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"), 1L, 1);
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -73,6 +80,22 @@ namespace MemeIT.Migrations
                         .IsUnique();
 
                     b.ToTable("User");
+                });
+
+            modelBuilder.Entity("MemeIT.Entities.Meme", b =>
+                {
+                    b.HasOne("MemeIT.Entities.User", "User")
+                        .WithMany("Memes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MemeIT.Entities.User", b =>
+                {
+                    b.Navigation("Memes");
                 });
 #pragma warning restore 612, 618
         }

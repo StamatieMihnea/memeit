@@ -8,18 +8,14 @@ namespace MemeIT.Entities
         public const int MaxDescriptionLimit = 2500;
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int MemeId
-        {
-            get;
-            set;
-        }
+        public int MemeId { get; set; }
 
-        [Required(ErrorMessage = "Meme description is required")]
-        [MaxLength(MaxDescriptionLimit, ErrorMessage = "Meme description must be less than 2500 characters long")]
-        public string Description
-        {
-            get;
-            set;
-        }
+        [Required]
+        [MaxLength(MaxDescriptionLimit)]
+        public string Description { get; set; }
+
+        public int UserId { get; set; }
+
+        public User User { get; set; }
     }
 }
