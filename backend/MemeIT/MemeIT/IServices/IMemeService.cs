@@ -54,7 +54,13 @@ namespace MemeIT.IServices
         /// <exception cref="NoPermissionException"></exception> 
         /// <exception cref="NotFoundException">Trow if no meme with desired id exists</exception>
         Task DeleteMeme(int memeId, int userId);
-
+        
+        /// <summary>
+        /// Retrieve meme image based on id
+        /// </summary>
+        /// <param name="memeId"></param>
+        /// <returns></returns>
+        /// <exception cref="NotFoundException"></exception>
         public FileStream GetMemeImage(int memeId);
     }
 }
