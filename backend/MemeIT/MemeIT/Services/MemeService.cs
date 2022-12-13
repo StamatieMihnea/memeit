@@ -23,7 +23,7 @@ namespace MemeIT.Services
         }
 
         /// <inheritdoc />>
-        public async Task<List<Meme>> GetMemes()
+        public async Task<List<Meme>> GetAll()
         {
             try
             {
@@ -36,7 +36,7 @@ namespace MemeIT.Services
         }
 
         /// <inheritdoc />>
-        public async Task<Meme> GetMeme(int id)
+        public async Task<Meme> Get(int id)
         {
             Meme? meme;
             try
@@ -59,7 +59,7 @@ namespace MemeIT.Services
         /// <inheritdoc />>
         public async Task<Meme> ChangeDescription(MemeModel meme, int userId)
         {
-            Meme? initialMeme = await GetMeme(meme.MemeId);
+            Meme? initialMeme = await Get(meme.MemeId);
             if (initialMeme == null)
             {
                 throw new NotFoundException($"Meme with id = {meme.MemeId} not found!");
@@ -84,7 +84,7 @@ namespace MemeIT.Services
         }
 
         /// <inheritdoc />>
-        public async Task<Meme> AddMeme(ImageMemeModel meme, int userId)
+        public async Task<Meme> Add(ImageMemeModel meme, int userId)
         {
             Meme addedMeme;
             try
@@ -124,7 +124,7 @@ namespace MemeIT.Services
             catch (Exception)
             {
                 //If image save fails the entry is remove from database in order to ensure that all memes have images
-                await DeleteMeme(memeId, userId);
+                await Delete(memeId, userId);
                 throw new InternalProblemException("An internal error occurred while trying to save the image");
             }
         }
@@ -153,9 +153,9 @@ namespace MemeIT.Services
         }
 
         /// <inheritdoc />>
-        public async Task DeleteMeme(int memeId, int userId)
+        public async Task Delete(int memeId, int userId)
         {
-            Meme meme = await GetMeme(memeId);
+            Meme meme = await Get(memeId);
             if (meme.UserId != userId)
             {
                 throw new NoPermissionException("You can only modify your memes");
@@ -175,7 +175,7 @@ namespace MemeIT.Services
         }
 
         /// <inheritdoc />>
-        public FileStream GetMemeImage(int memeId)
+        public FileStream GetImage(int memeId)
         {
             try
             {

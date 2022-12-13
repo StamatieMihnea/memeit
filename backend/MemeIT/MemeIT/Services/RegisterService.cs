@@ -23,16 +23,28 @@ namespace MemeIT.Services
         /// <inheritdoc />>
         public async Task RegisterUser(UserModel user)
         {
-            bool usernameAlreadyExist = await _dbContext.Set<User>().AnyAsync(u => u.Username == user.Username);
-            bool emailAlreadyExist = await _dbContext.Set<User>().AnyAsync(u => u.Email == user.Email);
+            bool usernameAlreadyExist;
+            bool emailAlreadyExist;
+            try
+            {
+                usernameAlreadyExist = await _dbContext.Set<User>().AnyAsync(u => u.Username == user.Username);
+                emailAlreadyExist = await _dbContext.Set<User>().AnyAsync(u => u.Email == user.Email);
+            }
+            catch (Exception)
+            {
+                throw new InternalProblemException("An internal error occurred!");
+            }
+            
             if (usernameAlreadyExist)
             {
                 throw new InvalidDataException("Username already exists");
             }
+            
             if (emailAlreadyExist)
             {
                 throw new InvalidDataException("Email already registered");
             }
+
             String hashedPassword = BCrypt.Net.BCrypt.HashPassword(user.Password);
             user.Password = hashedPassword;
             try

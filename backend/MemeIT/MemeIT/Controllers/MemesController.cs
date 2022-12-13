@@ -23,12 +23,12 @@ namespace MemeIT.Controllers
         {
             try
             {
-                List<Meme> memes = await _memeService.GetMemes();
+                List<Meme> memes = await _memeService.GetAll();
                 return Ok(memes);
             }
             catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new { error = e.Message });
             }
         }
 
@@ -37,12 +37,12 @@ namespace MemeIT.Controllers
         {
             try
             {
-                Meme meme = await _memeService.GetMeme(id);
+                Meme meme = await _memeService.Get(id);
                 return Ok(meme);
             }
             catch (Exception e) when (e is InternalProblemException)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new { error = e.Message });
             }
             catch (Exception e) when (e is NotFoundException)
             {
@@ -57,12 +57,12 @@ namespace MemeIT.Controllers
             int userId = Convert.ToInt32(User.Claims.First(c => c.Type == "id").Value);
             try
             {
-                Meme addedMeme = await _memeService.AddMeme(meme, userId);
+                Meme addedMeme = await _memeService.Add(meme, userId);
                 return Ok(addedMeme);
             }
             catch (Exception e) when (e is InternalProblemException)
             {
-                return StatusCode(StatusCodes.Status503ServiceUnavailable, e.Message);
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, new { error = e.Message });
             }
         }
 
@@ -78,15 +78,15 @@ namespace MemeIT.Controllers
             }
             catch (Exception e) when (e is InternalProblemException)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new { error = e.Message });
             }
             catch (Exception e) when (e is NotFoundException)
             {
-                return NotFound(e.Message);
+                return NotFound(new { error = e.Message });
             }
             catch (Exception e) when (e is NoPermissionException)
             {
-                return StatusCode(StatusCodes.Status403Forbidden, e.Message);
+                return StatusCode(StatusCodes.Status403Forbidden, new { error = e.Message });
             }
         }
 
@@ -97,20 +97,20 @@ namespace MemeIT.Controllers
             int userId = Convert.ToInt32(User.Claims.First(c => c.Type == "id").Value);
             try
             {
-                await _memeService.DeleteMeme(memeId, userId);
+                await _memeService.Delete(memeId, userId);
                 return Ok($"Meme with id = {memeId} successfully deleted");
             }
             catch (Exception e) when (e is NotFoundException)
             {
-                return NotFound(e.Message);
+                return NotFound(new { error = e.Message });
             }
             catch (Exception e) when (e is InternalProblemException)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, e.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, new { error = e.Message });
             }
             catch (Exception e) when (e is NoPermissionException)
             {
-                return StatusCode(StatusCodes.Status403Forbidden, e.Message);
+                return StatusCode(StatusCodes.Status403Forbidden, new { error = e.Message });
             }
         }
 
@@ -120,12 +120,12 @@ namespace MemeIT.Controllers
         {
             try
             {
-                return File(_memeService.GetMemeImage(memeId), "image/png");
+                return File(_memeService.GetImage(memeId), "image/png");
 
             }
             catch (Exception e) when (e is NotFoundException)
             {
-                return NotFound(e.Message);
+                return NotFound(new { error = e.Message });
             }
         }
     }

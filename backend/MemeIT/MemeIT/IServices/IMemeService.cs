@@ -1,7 +1,6 @@
 ﻿using MemeIT.Entities;
 using MemeIT.Helpers.CustomExceptions;
 using MemeIT.Models;
-using Microsoft.AspNetCore.Mvc;
 
 namespace MemeIT.IServices
 {
@@ -12,7 +11,7 @@ namespace MemeIT.IServices
         /// </summary>
         /// <returns>A list with all memes</returns>
         /// <exception cref="InternalProblemException">Trow if an internal error occurs</exception>
-        Task<List<Meme>> GetMemes();
+        Task<List<Meme>> GetAll();
 
 
         /// <summary>
@@ -22,7 +21,7 @@ namespace MemeIT.IServices
         /// <returns>Found meme object</returns>
         /// <exception cref="NotFoundException">Trow if no meme with desired id exists</exception>
         /// <exception cref="InternalProblemException">Trow if an internal error occurs</exception>
-        Task<Meme> GetMeme(int id);
+        Task<Meme> Get(int id);
 
         /// <summary>
         /// Changes a meme description 
@@ -42,7 +41,7 @@ namespace MemeIT.IServices
         /// <param name="userId">User that tries the operation</param>
         /// <returns>The added meme</returns>
         /// <exception cref="InternalProblemException">Trow if an internal error occurs</exception>
-        Task<Meme> AddMeme(ImageMemeModel meme, int userId);
+        Task<Meme> Add(ImageMemeModel meme, int userId);
 
         /// <summary>
         /// Deletes a meme based on id
@@ -53,7 +52,7 @@ namespace MemeIT.IServices
         /// <exception cref="InternalProblemException"></exception>
         /// <exception cref="NoPermissionException"></exception> 
         /// <exception cref="NotFoundException">Trow if no meme with desired id exists</exception>
-        Task DeleteMeme(int memeId, int userId);
+        Task Delete(int memeId, int userId);
         
         /// <summary>
         /// Retrieve meme image based on id
@@ -61,6 +60,6 @@ namespace MemeIT.IServices
         /// <param name="memeId"></param>
         /// <returns></returns>
         /// <exception cref="NotFoundException"></exception>
-        public FileStream GetMemeImage(int memeId);
+        public FileStream GetImage(int memeId);
     }
 }

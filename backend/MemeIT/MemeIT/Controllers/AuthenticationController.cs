@@ -29,11 +29,11 @@ namespace MemeIT.Controllers
             }
             catch (Exception e) when (e is InternalProblemException)
             {
-                return StatusCode(StatusCodes.Status503ServiceUnavailable, e.Message);
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, new { error = e.Message });
             }
             catch (Exception e) when (e is InvalidDataException)
             {
-                return BadRequest(e.Message);
+                return BadRequest(new { error = e.Message });
             }
         }
 
@@ -43,12 +43,16 @@ namespace MemeIT.Controllers
         {
             try
             {
-                String token = await _loginService.Login(username, password);
-                return Ok(token);
+                String tokenString = await _loginService.Login(username, password);
+                return Ok(new { token = tokenString });
             }
             catch (Exception e) when (e is InvalidDataException)
             {
-                return Unauthorized(e.Message);
+                return Unauthorized(new { error = e.Message });
+            }
+            catch (Exception e) when (e is InternalProblemException)
+            {
+                return BadRequest(new { error = e.Message });
             }
         }
     }
