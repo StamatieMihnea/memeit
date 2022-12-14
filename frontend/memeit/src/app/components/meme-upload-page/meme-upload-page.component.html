@@ -1,0 +1,65 @@
+<div
+  class="flex-container meme-upload-wrapper"
+  fxLayoutAlign="center center"
+  fxLayout="row"
+>
+  <div
+    class="flex-container meme-upload-container"
+    fxLayout.gt-md="row"
+    fxLayout.lt-md="column"
+    fxLayoutAlign="space-evenly center"
+  >
+    <div
+      class="flex-container description-wrapper"
+      fxLayout="column"
+      fxLayoutAlign="space-evenly center"
+    >
+      <div
+        [ngClass.lt-md]="'header-container-mobile'"
+        [ngClass.gt-sm]="'header-container'"
+      >
+        <h2>Ai tupeu si crezi ca esti amuzant?</h2>
+      </div>
+      <div
+        [ngClass.lt-md]="'subheader-container-mobile'"
+        [ngClass.gt-sm]="'header-container'"
+      >
+        <h3>
+          Trimite-ne un mail si poate ai noroc sa ne apuce rasul cand iti vedem
+          meme-ul.
+        </h3>
+      </div>
+    </div>
+    <form
+      class="flex-container"
+      style="height: 100%"
+      fxLayout="column"
+      fxLayoutAlign="space-evenly center"
+    >
+      <div
+        class="flex-container form-fields-wrapper"
+        fxLayout="column"
+        fxLayoutAlign="center center"
+      >
+        <div class="form-field-container">
+          <p>Descriere</p>
+          <mat-form-field class="form-field" appearance="outline">
+            <mat-label>descriere</mat-label>
+            <input matInput required />
+          </mat-form-field>
+        </div>
+        <div class="form-field-container">
+          <p>Meme (jpg, jpeg, png, gif)</p>
+          <!-- <input type="file"> -->
+          <mat-form-field class="form-field" appearance="outline">
+            <mat-label>drag & drop image or click to upload</mat-label>
+            <textarea rows="2" matInput required> </textarea>
+          </mat-form-field>
+        </div>
+      </div>
+      <button mat-raised-button class="submit-button" color="primary">
+        Trimite
+      </button>
+    </form>
+  </div>
+</div>

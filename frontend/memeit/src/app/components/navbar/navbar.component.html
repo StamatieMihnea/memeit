@@ -1,1 +1,19 @@
-<p>navbar works!</p>
+<mat-toolbar
+  class="flex-container navbar-container"
+  fxLayout="row"
+  fxLayoutAlign="space-between center"
+>
+  <img src="/assets/img/MemeItLogo.png" />
+  <div fxShow="false" fxShow.gt-sm >
+    <login-buttons class="flex-container" fxLayout="row"></login-buttons>
+  </div>
+  <button
+    class="large-icon-button"
+    fxShow="false"
+    fxShow.lt-md
+    mat-icon-button
+    (click)="toggleDrawer()"
+  >
+    <mat-icon>apps</mat-icon>
+  </button>
+</mat-toolbar>

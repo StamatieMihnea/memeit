@@ -1,0 +1,46 @@
+@use '/src/custom-theme.scss' as theme;
+
+.meme-upload-wrapper {
+    width: 100%;
+    padding-top: 80px;
+    padding-bottom: 80px;
+    @include theme.get-theme-color-property(background-color, primary);
+}
+
+.meme-upload-container {
+    border-radius: 10px;
+    background-color: white;
+    width: 800px;
+    max-width: 80vw;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.description-wrapper{
+    width: 400px;
+    max-width: 90vw;
+}
+
+.form-field-container{
+    width: 300px;
+    max-width: 90vw;
+}
+
+.form-field{
+    width: 100%;
+}
+
+.header-container-mobile{
+    max-width: 60vw;
+    text-align: center;
+}
+
+.subheader-container-mobile{
+    max-width: 60vw;
+    text-align: center;
+}
+.header-container{
+    width: 100%;
+    text-align: start;
+}
+

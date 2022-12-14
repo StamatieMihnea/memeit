@@ -1,0 +1,20 @@
+<div class="dialog-container">
+    <div
+      class="flex-container dialog-header-container"
+      fxLayout="row"
+      fxLayoutAlign="space-between center"
+    >
+      <img class="dialog-logo" src="/assets/img/MemeItLogo.png" />
+      <button mat-icon-button mat-dialog-close>
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </div>
+    <div
+      class="flex-container dialog-content-container"
+      fxLayoutAlign="center center"
+    >
+    <div class="dialog-content-wrapper">
+      <ng-content></ng-content>
+    </div>
+  </div>
+  </div>

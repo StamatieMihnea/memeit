@@ -1,0 +1,30 @@
+<div
+  class="flex-container welcome-page-container"
+  fxLayout.gt-md="row"
+  fxLayout.lt-md="column"
+  fxLayoutAlign="space-evenly center"
+>
+  <div
+    class="flex-container"
+    fxLayout="column"
+    fxLayoutAlign="center center"
+    fxFlex.gt-sm="35%"
+  >
+    <div class="header-container">
+      <h1>Partajarea de meme-uri nu a fost niciodata mai simpla!</h1>
+    </div>
+    <div
+      class="subheader-container"
+      [ngClass.gt-sm]="'constrain-subheader-container'"
+    >
+      <h3>
+        Platforma ideala pentru studentii de la Politehnica, amuzati de cate
+        materii o sa pice semestrul asta
+      </h3>
+    </div>
+    <button mat-raised-button color="primary" class="upload-button" (click)="scrollToMemeUpload()">
+      Upload a MEME
+    </button>
+  </div>
+  <img class="welcome-image" src="/assets/img/MainPage.png" />
+</div>

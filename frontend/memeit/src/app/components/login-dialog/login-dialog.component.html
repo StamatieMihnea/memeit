@@ -1,0 +1,33 @@
+<dialog-template>
+  <form
+    class="flex-container"
+    style="height: 100%"
+    fxLayout="column"
+    fxLayoutAlign="space-evenly center"
+  >
+    <h2 class="form-title">Welcome back</h2>
+    <div
+      class="flex-container form-fields-wrapper"
+      fxLayout="column"
+      fxLayoutAlign="center center"
+    >
+      <div class="form-field-container">
+        <p>Username</p>
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>username</mat-label>
+          <input matInput required />
+        </mat-form-field>
+      </div>
+      <div class="form-field-container">
+        <p>Parola</p>
+        <mat-form-field class="form-field" appearance="outline">
+          <mat-label>parola</mat-label>
+          <input matInput required type="password"/>
+        </mat-form-field>
+      </div>
+    </div>
+    <button mat-raised-button class="submit-button" color="primary">
+      Logare
+    </button>
+  </form>
+</dialog-template>

@@ -7,6 +7,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using MemeIT.Helpers.CustomExceptions;
+using MemeIT.Models;
 using InvalidDataException = MemeIT.Helpers.CustomExceptions.InvalidDataException;
 
 namespace MemeIT.Services
@@ -49,12 +50,12 @@ namespace MemeIT.Services
         }
 
         /// <inheritdoc />>
-        public async Task<string> Login(string username, string password)
+        public async Task<string> Login(LoginModel loginModel)
         {
             User? user;
             try
             {
-               user = await _dbCon.Set<User>().FirstOrDefaultAsync(u => u.Username == username);
+                user = await _dbCon.Set<User>().FirstOrDefaultAsync(u => u.Username == loginModel.Username);
 
             }
             catch (Exception)
@@ -66,7 +67,7 @@ namespace MemeIT.Services
             {
                 throw new InvalidDataException("Wrong username or password");
             }
-            bool passwordMatch = BCrypt.Net.BCrypt.Verify(password, user.Password);
+            bool passwordMatch = BCrypt.Net.BCrypt.Verify(loginModel.Password, user.Password);
             if (passwordMatch)
             {
                 return GenerateJwt(user);

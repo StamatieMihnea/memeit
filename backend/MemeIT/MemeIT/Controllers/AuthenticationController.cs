@@ -38,12 +38,12 @@ namespace MemeIT.Controllers
         }
 
         [Route("api/login")]
-        [HttpGet]
-        public async Task<IActionResult> Login(String username, String password)
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginModel loginModel)
         {
             try
             {
-                String tokenString = await _loginService.Login(username, password);
+                String tokenString = await _loginService.Login(loginModel);
                 return Ok(new { token = tokenString });
             }
             catch (Exception e) when (e is InvalidDataException)

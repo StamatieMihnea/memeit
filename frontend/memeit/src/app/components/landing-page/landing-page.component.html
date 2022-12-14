@@ -1,0 +1,19 @@
+<div class="content-wrapper">
+  <mat-sidenav-container>
+    <mat-sidenav
+      #drawer
+      mode="over"
+      fixedInViewport="true"
+      fixedTopGap="100"
+      position="end"
+      fxShow="false"
+      fxShow.lt-md
+    >
+      <login-buttons class="flex-container" fxLayout="column"></login-buttons>
+    </mat-sidenav>
+    <welcome-page id="welcome-page"></welcome-page>
+    <meme-upload-page id="meme-upload-page"></meme-upload-page>
+    <most-viewed-page id="most-viewed-page"></most-viewed-page>
+    <footer id="footer"></footer>
+  </mat-sidenav-container>
+</div>

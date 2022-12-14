@@ -1,0 +1,13 @@
+@use '/src/custom-theme.scss' as theme;
+
+.footer-container {
+    @include theme.get-theme-color-property(background-color, accent);
+    padding: 50px;
+}
+.copyright-message {
+    color: white;
+    font-size: min(24px, 2vw);
+}
+.copyright-message-container{
+    text-align: center;
+}

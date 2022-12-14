@@ -1,0 +1,25 @@
+<div class="most-viewed-container">
+  <h1 class="most-viewed-header">Most Viewed</h1>
+  <div
+    class="flex-container memes-container"
+    fxLayout.gt-sm="row"
+    fxLayout.lt-md="column"
+    fxLayoutAlign="space-evenly center"
+  >
+    <img
+      fxFlex.gt-sm="25%"
+      [ngClass.lt-md]="'image-mobile'"
+      src="assets/img/Meme1.png"
+    />
+    <img
+      fxFlex.gt-sm="25%"
+      [ngClass.lt-md]="'image-mobile'"
+      src="assets/img/Meme2.png"
+    />
+    <img
+      fxFlex.gt-sm="25%"
+      [ngClass.lt-md]="'image-mobile'"
+      src="assets/img/Meme3.png"
+    />
+  </div>
+</div>
