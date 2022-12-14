@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-// import { LoginService } from 'src/app/services/login.service';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-login-dialog',
@@ -7,20 +7,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./login-dialog.component.scss'],
 })
 export class LoginDialogComponent implements OnInit {
+  username: string;
+  password: string;
 
-  // username: string;
-  // password: string;
-
-  constructor(
-    // private loginService: LoginService
-    ) {
-    // this.username = '';
-    // this.password = '';
+  constructor(public loginService: LoginService) {
+    this.username = '';
+    this.password = '';
   }
 
   ngOnInit(): void {}
 
-  // loginUser(): void {
-  //   this.loginService.loginUser(this.username, this.password);
-  // }
+  loginUser(): void {
+    this.loginService.loginUser(this.username, this.password);
+  }
 }

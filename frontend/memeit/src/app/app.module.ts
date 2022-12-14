@@ -1,4 +1,3 @@
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './components/main/app.component';
 
 import { NavbarComponent } from './components/navbar/navbar.component';
@@ -21,6 +20,9 @@ import { FooterComponent } from './components/footer/footer.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,7 @@ import { NgModule } from '@angular/core';
     FooterComponent,
   ],
   imports: [
-    AppRoutingModule,
+    BrowserModule,
     FlexLayoutModule,
     MatToolbarModule,
     MatIconModule,
@@ -47,6 +49,8 @@ import { NgModule } from '@angular/core';
     MatInputModule,
     MatSidenavModule,
     HttpClientModule,
+    BrowserAnimationsModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent],

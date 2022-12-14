@@ -1,6 +1,7 @@
 ﻿using MemeIT.Helpers.CustomExceptions;
 using MemeIT.IServices;
 using MemeIT.Models;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using InvalidDataException = MemeIT.Helpers.CustomExceptions.InvalidDataException;
 
