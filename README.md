@@ -5,7 +5,7 @@
 ### -Frontend
 - Task 1 ✅ 
     - Login and Register dialogs ✅ 
-    - Conditional dislay for Login and Register buttons ❌
+    - Conditional display for Login and Register buttons ❌
     - Fixed navbar ✅ 
 - Task 2 ✅ 
     - Welcome page ✅ 
@@ -17,7 +17,7 @@
     - Upload form created ✅ 
     - Drag and Drop Image and Upload image field with validation ❌  (used textarea to simulate)
 - Task 5 ✅ 
-    - Footer with redirect link on coresponding buttons ✅ 
+    - Footer with redirect link on corresponding buttons ✅ 
 - Task 6 ✅ 
     - Responsive design on any resolution ✅ 
 
@@ -38,7 +38,7 @@
 
 ## Run the app
 ### -Frontend
-##### - Prerequisition
+##### - Prerequisites
 - node.js (^14.20 | ^16.13 | ^18.10)
 - npm
 
@@ -49,10 +49,10 @@ npm install
 ng serve
 ```
 ### -Backend
-##### - Prerequisition
+##### - Prerequisites
 - Sql Server (running localhost database)
 - Visual Studio 2022 (needed for .Net 6 support)
-- ASP.Net and web development Workload (installation dialog will pop when project solution is opened in Visual Studio; worload can also be installed from Visual Studio Installer)
+- ASP.Net and web development Workload (installation dialog will pop when project solution is opened in Visual Studio; workload can also be installed from Visual Studio Installer)
 
 ##### - Commands
 Open project .sln file. The project solution will be opened in VS.
@@ -61,4 +61,17 @@ To run database migrations, in Package Manager Console, run:
 ```sh
 Update-Database
 ```
-After migration succed project can be started from VS and it can be tested using the Swagger interface.
+After migration succeed project can be started from VS and it can be tested using the Swagger interface.
+
+## Challenges 
+Responsive UI - solved using fxFlex library
+Secure Authentication - solved using Bcrypt for hashing and JWToken
+Node, npm and Angular versions conflicts - used nvm to control node and npm versions
+Error handling with suggestive messages for Api - created custom exceptions and used services to emit these exception; this way the controller is responsible for catching these specific exception and an custom message can be returned for every exception
+
+## Layout Overview
+### Desktop
+![](memeit.gif)
+
+### Mobile
+![](memeitmobile.gif)
