@@ -64,9 +64,9 @@ Update-Database
 After migration succeed project can be started from VS and it can be tested using the Swagger interface.
 
 ## Challenges 
-Responsive UI - solved using fxFlex library
-Secure Authentication - solved using Bcrypt for hashing and JWToken
-Node, npm and Angular versions conflicts - used nvm to control node and npm versions
+Responsive UI - solved using fxFlex library  
+Secure Authentication - solved using Bcrypt for hashing and JWToken  
+Node, npm and Angular versions conflicts - used nvm to control node and npm versions  
 Error handling with suggestive messages for Api - created custom exceptions and used services to emit these exception; this way the controller is responsible for catching these specific exception and an custom message can be returned for every exception
 
 ## Layout Overview
